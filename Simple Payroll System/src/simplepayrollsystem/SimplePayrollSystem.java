@@ -1,235 +1,238 @@
 package simplepayrollsystem;
 
 import java.awt.Color;
-import java.awt.EventQueue;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 public class SimplePayrollSystem extends JFrame {
 
+    private static final long serialVersionUID = 1L;
     private JPanel contentPane;
-    private JTextField textName;
-    private JTextField textRate;
-    private JTextField textHours;
-    private JTextField textdays;
-    private JTextField textFieldTAX;
-    private JTextField textFieldPhilhealth;
-    private JTextField textFieldSSS;
-    private JTextField textFieldGrossSalary;
-    private JTextField textFieldTotalDeduction;
-    private JTextField textField_9;
-    private JTextField textField_10;
-    private JTextField textFieldNetSalary;
+    private JTextField Name;
+    private JTextField Rate;
+    private JTextField Hours;
+    private JTextField Days;
+    private JTextField Tax;
+    private JTextField Phealth;
+    private JTextField sss;
+    private JTextField Gross;
+    private JTextField Deduction;
+    private JTextField GrossSal;
+    private JTextField TotalDeductions;
+    private JTextField NetSalary;
 
+    /**
+     * Launch the application.
+     */
     public static void main(String[] args) {
-	EventQueue.invokeLater(new Runnable() {
-	    public void run() {
-		try {
-		    SimplePayrollSystem frame = new SimplePayrollSystem();
-		    frame.setVisible(true);
-		} catch (Exception e) {
-		    e.printStackTrace();
-		}
-	    }
-	});
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    SimplePayrollSystem frame = new SimplePayrollSystem();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
      * Create the frame.
      */
     public SimplePayrollSystem() {
-	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setBounds(100, 100, 976, 410);
-	contentPane = new JPanel();
-	contentPane.setForeground(new Color(255, 255, 255));
-	contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 778, 436);
+        contentPane = new JPanel();
+        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
-	setContentPane(contentPane);
-	contentPane.setLayout(null);
+        setContentPane(contentPane);
+        contentPane.setLayout(null);
 
-	JLabel lblNewLabel = new JLabel("Simple Payroll System");
-	lblNewLabel.setBounds(312, 10, 381, 28);
-	lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
-	contentPane.add(lblNewLabel);
+        JLabel lblName = new JLabel("Employee Name:");
+        lblName.setBounds(34, 61, 90, 19);
+        contentPane.add(lblName);
 
-	JLabel lblNewLabel_1 = new JLabel("Employee Name:");
-	lblNewLabel_1.setBounds(53, 59, 119, 28);
-	lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_1);
+        Name = new JTextField();
+        Name.setBounds(134, 60, 86, 20);
+        contentPane.add(Name);
+        Name.setColumns(10);
 
-	JLabel lblNewLabel_2 = new JLabel("New label");
-	lblNewLabel_2.setBounds(211, 69, 2, -2);
-	contentPane.add(lblNewLabel_2);
+        JLabel lblNewLabel = new JLabel("Rate Per Hour:");
+        lblNewLabel.setBounds(34, 99, 76, 17);
+        contentPane.add(lblNewLabel);
 
-	textName = new JTextField();
-	textName.setBounds(178, 66, 137, 19);
-	contentPane.add(textName);
-	textName.setColumns(10);
+        Rate = new JTextField();
+        Rate.setBounds(134, 96, 86, 20);
+        contentPane.add(Rate);
+        Rate.setColumns(10);
 
-	JLabel lblNewLabel_3 = new JLabel("Rate Per Hour:");
-	lblNewLabel_3.setBounds(63, 92, 107, 28);
-	lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_3);
+        JLabel lblNewLabel_1 = new JLabel("Hour Per Day:");
+        lblNewLabel_1.setBounds(34, 138, 76, 14);
+        contentPane.add(lblNewLabel_1);
 
-	JLabel lblNewLabel_4 = new JLabel("Hour Per Day:");
-	lblNewLabel_4.setBounds(75, 130, 97, 28);
-	lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_4);
+        Hours = new JTextField();
+        Hours.setBounds(134, 135, 86, 20);
+        contentPane.add(Hours);
+        Hours.setColumns(10);
 
-	JLabel lblNewLabel_5 = new JLabel("Number of days worked:");
-	lblNewLabel_5.setBounds(10, 168, 171, 28);
-	lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_5);
+        JLabel lblNewLabel_2 = new JLabel("Number of days worked:");
+        lblNewLabel_2.setBounds(10, 182, 100, 19);
+        contentPane.add(lblNewLabel_2);
 
-	textRate = new JTextField();
-	textRate.setBounds(178, 99, 137, 19);
-	contentPane.add(textRate);
-	textRate.setColumns(10);
+        Days = new JTextField();
+        Days.setBounds(134, 181, 86, 20);
+        contentPane.add(Days);
+        Days.setColumns(10);
 
-	textHours = new JTextField();
-	textHours.setBounds(178, 137, 137, 21);
-	contentPane.add(textHours);
-	textHours.setColumns(10);
+        JLabel lblNewLabel_3 = new JLabel("DEDUCTION OF SALARY:");
+        lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 11));
+        lblNewLabel_3.setForeground(new Color(255, 0, 0));
+        lblNewLabel_3.setBounds(244, 63, 142, 17);
+        contentPane.add(lblNewLabel_3);
 
-	textdays = new JTextField();
-	textdays.setBounds(178, 175, 137, 19);
-	contentPane.add(textdays);
-	textdays.setColumns(10);
+        JLabel lblNewLabel_4 = new JLabel("Tax 15% of Monthly Wage:");
+        lblNewLabel_4.setBounds(254, 100, 142, 14);
+        contentPane.add(lblNewLabel_4);
 
-	JLabel lblNewLabel_6 = new JLabel("DEDUCTION OF SALARY:");
-	lblNewLabel_6.setBounds(366, 69, 208, 19);
-	lblNewLabel_6.setForeground(new Color(255, 0, 0));
-	lblNewLabel_6.setFont(new Font("Tahoma", Font.BOLD, 15));
-	contentPane.add(lblNewLabel_6);
+        Tax = new JTextField();
+        Tax.setEnabled(false);
+        Tax.setEditable(false);
+        Tax.setBounds(398, 97, 86, 20);
+        contentPane.add(Tax);
+        Tax.setColumns(10);
 
-	JLabel lblNewLabel_7 = new JLabel("TAX 15% of Monthly Wage");
-	lblNewLabel_7.setBounds(335, 102, 188, 18);
-	lblNewLabel_7.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_7);
+        JLabel lblNewLabel_5 = new JLabel("Philhealth 5%:");
+        lblNewLabel_5.setBounds(315, 138, 76, 14);
+        contentPane.add(lblNewLabel_5);
 
-	JLabel lblNewLabel_8 = new JLabel("Philhealth 5%");
-	lblNewLabel_8.setBounds(426, 145, 97, 13);
-	lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_8);
+        Phealth = new JTextField();
+        Phealth.setEditable(false);
+        Phealth.setEnabled(false);
+        Phealth.setBounds(398, 135, 86, 20);
+        contentPane.add(Phealth);
+        Phealth.setColumns(10);
 
-	JLabel lblNewLabel_9 = new JLabel("SSS 2%");
-	lblNewLabel_9.setBounds(464, 183, 59, 13);
-	lblNewLabel_9.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_9);
+        JLabel lblNewLabel_6 = new JLabel("sss 2%:");
+        lblNewLabel_6.setBounds(340, 182, 46, 14);
+        contentPane.add(lblNewLabel_6);
 
-	textFieldTAX = new JTextField();
-	textFieldTAX.setBounds(533, 101, 96, 19);
-	contentPane.add(textFieldTAX);
-	textFieldTAX.setColumns(10);
-	textFieldTAX.setEditable(false);
+        sss = new JTextField();
+        sss.setEditable(false);
+        sss.setEnabled(false);
+        sss.setBounds(398, 181, 86, 20);
+        contentPane.add(sss);
+        sss.setColumns(10);
 
-	textFieldPhilhealth = new JTextField();
-	textFieldPhilhealth.setBounds(533, 144, 96, 19);
-	contentPane.add(textFieldPhilhealth);
-	textFieldPhilhealth.setColumns(10);
-	textFieldPhilhealth.setEditable(false);
+        JLabel lblNewLabel_7 = new JLabel("Gross salary:");
+        lblNewLabel_7.setBounds(528, 100, 70, 19);
+        contentPane.add(lblNewLabel_7);
 
-	textFieldSSS = new JTextField();
-	textFieldSSS.setBounds(533, 182, 96, 19);
-	contentPane.add(textFieldSSS);
-	textFieldSSS.setColumns(10);
-	textFieldSSS.setEditable(false);
+        Gross = new JTextField();
+        Gross.setEnabled(false);
+        Gross.setEditable(false);
+        Gross.setBounds(608, 97, 86, 20);
+        contentPane.add(Gross);
+        Gross.setColumns(10);
 
-	JLabel lblNewLabel_10 = new JLabel("Gross Salary:");
-	lblNewLabel_10.setBounds(683, 92, 107, 13);
-	lblNewLabel_10.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_10);
+        JLabel lblNewLabel_8 = new JLabel("Deduction:");
+        lblNewLabel_8.setBounds(538, 138, 60, 14);
+        contentPane.add(lblNewLabel_8);
 
-	JLabel lblNewLabel_11 = new JLabel("Deduction:");
-	lblNewLabel_11.setBounds(701, 130, 80, 13);
-	lblNewLabel_11.setFont(new Font("Tahoma", Font.PLAIN, 15));
-	contentPane.add(lblNewLabel_11);
+        Deduction = new JTextField();
+        Deduction.setEditable(false);
+        Deduction.setEnabled(false);
+        Deduction.setBounds(608, 135, 86, 20);
+        contentPane.add(Deduction);
+        Deduction.setColumns(10);
 
-	JLabel lblNewLabel_12 = new JLabel("GROSS SALARY :");
-	lblNewLabel_12.setBounds(32, 264, 137, 13);
-	lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 15));
-	contentPane.add(lblNewLabel_12);
+        JLabel GrossSalary = new JLabel("GROSS SALARY:");
+        GrossSalary.setFont(new Font("Tahoma", Font.BOLD, 15));
+        GrossSalary.setBounds(10, 254, 129, 14);
+        contentPane.add(GrossSalary);
 
-	textFieldGrossSalary = new JTextField();
-	textFieldGrossSalary.setBounds(178, 261, 137, 19);
-	contentPane.add(textFieldGrossSalary);
-	textFieldGrossSalary.setColumns(10);
-	textFieldGrossSalary.setEditable(false);
+        GrossSal = new JTextField();
+        GrossSal.setEnabled(false);
+        GrossSal.setEditable(false);
+        GrossSal.setBounds(134, 253, 86, 20);
+        contentPane.add(GrossSal);
+        GrossSal.setColumns(10);
 
-	JLabel lblNewLabel_13 = new JLabel("TOTAL DEDUCTION :");
-	lblNewLabel_13.setBounds(352, 267, 171, 13);
-	lblNewLabel_13.setFont(new Font("Tahoma", Font.BOLD, 15));
-	contentPane.add(lblNewLabel_13);
+        JLabel lblNewLabel_10 = new JLabel("TOTAL DEDUCTION:");
+        lblNewLabel_10.setFont(new Font("Tahoma", Font.BOLD, 16));
+        lblNewLabel_10.setBounds(223, 254, 173, 14);
+        contentPane.add(lblNewLabel_10);
 
-	textFieldTotalDeduction = new JTextField();
-	textFieldTotalDeduction.setBounds(533, 264, 96, 19);
-	contentPane.add(textFieldTotalDeduction);
-	textFieldTotalDeduction.setColumns(10);
-	textFieldTotalDeduction.setEditable(false);
+        TotalDeductions = new JTextField();
+        TotalDeductions.setEnabled(false);
+        TotalDeductions.setEditable(false);
+        TotalDeductions.setBounds(398, 253, 86, 20);
+        contentPane.add(TotalDeductions);
+        TotalDeductions.setColumns(10);
 
-	textField_9 = new JTextField();
-	textField_9.setBounds(786, 92, 96, 19);
-	contentPane.add(textField_9);
-	textField_9.setColumns(10);
+        JLabel lblNewLabel_11 = new JLabel("NET SALARY:");
+        lblNewLabel_11.setFont(new Font("Tahoma", Font.BOLD, 16));
+        lblNewLabel_11.setBounds(494, 254, 120, 14);
+        contentPane.add(lblNewLabel_11);
 
-	textField_10 = new JTextField();
-	textField_10.setBounds(786, 129, 96, 19);
-	contentPane.add(textField_10);
-	textField_10.setColumns(10);
+        NetSalary = new JTextField();
+        NetSalary.setEditable(false);
+        NetSalary.setEnabled(false);
+        NetSalary.setBounds(608, 253, 86, 20);
+        contentPane.add(NetSalary);
+        NetSalary.setColumns(10);
 
-	JLabel lblNewLabel_14 = new JLabel("NET SALARY :");
-	lblNewLabel_14.setBounds(658, 270, 118, 13);
-	lblNewLabel_14.setFont(new Font("Tahoma", Font.BOLD, 16));
-	contentPane.add(lblNewLabel_14);
+        JButton btnNewButton = new JButton("COMPUTE");
+        btnNewButton.setBackground(new Color(64, 128, 128));
+        btnNewButton.setForeground(new Color(0, 0, 0));
+        btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnNewButton.setBounds(307, 310, 144, 23);
+        contentPane.add(btnNewButton);
 
-	textFieldNetSalary = new JTextField();
-	textFieldNetSalary.setBounds(786, 269, 96, 19);
-	contentPane.add(textFieldNetSalary);
-	textFieldNetSalary.setColumns(10);
-	textFieldNetSalary.setEditable(false);
+        btnNewButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                performCalculation();
+            }
+        });
 
-	JButton btnNewButton = new JButton("Compute");
-	btnNewButton.addActionListener(new ActionListener() {
-	    public void actionPerformed(ActionEvent e) {
-		// GROSS SALARY
-		int rate = Integer.parseInt(textRate.getText());
-		int hours = Integer.parseInt(textHours.getText());
-		int days = Integer.parseInt(textdays.getText());
-		int grossSalary = rate * hours * days;
-		textFieldGrossSalary.setText(String.valueOf(grossSalary));
+        JLabel lblNewLabel_12 = new JLabel("Simple Payroll System");
+        lblNewLabel_12.setFont(new Font("Tahoma", Font.BOLD, 18));
+        lblNewLabel_12.setBounds(268, 23, 216, 26);
+        contentPane.add(lblNewLabel_12);
+    }
 
-		// DEDUCTIONS
-		int tax = (int) (grossSalary * 0.15);
-		textFieldTAX.setText(String.valueOf(tax));
-
-		int philhealth = (int) (grossSalary * 0.05);
-		textFieldPhilhealth.setText(String.valueOf(philhealth));
-
-		int sss = (int) (grossSalary * 0.02);
-		textFieldSSS.setText(String.valueOf(sss));
-
-		int totaldeduction = tax + philhealth + sss;
-		textFieldTotalDeduction.setText(String.valueOf(totaldeduction));
-		// Net salary
-		textField_9.setText(String.valueOf(grossSalary));
-		textField_10.setText(String.valueOf(totaldeduction));
-		int netsalary = grossSalary - totaldeduction;
-		textFieldNetSalary.setText(String.valueOf(netsalary));
-
-	    }
-	});
-	btnNewButton.setForeground(new Color(255, 255, 255));
-	btnNewButton.setBackground(new Color(0, 64, 64));
-	btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 20));
-	btnNewButton.setBounds(426, 319, 163, 44);
-	contentPane.add(btnNewButton);
+    private void performCalculation() {
+        try {
+            int num1 = Integer.parseInt(Rate.getText());
+            int num2 = Integer.parseInt(Hours.getText());
+            int num3 = Integer.parseInt(Days.getText());
+            int result = num1 * num2 * num3;
+            GrossSal.setText("Result: " + result);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Invalid input. Please enter integers.");
+        }
     }
 }
