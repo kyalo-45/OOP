@@ -24,9 +24,6 @@ public class RegForm {
 	private JPasswordField pwdPassword;
 	private JPasswordField pwdConfirm;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -40,16 +37,10 @@ public class RegForm {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public RegForm() {
 		initialize();
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private void initialize() {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 558, 533);
